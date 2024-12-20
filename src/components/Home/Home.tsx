@@ -1,12 +1,5 @@
-import React from "react";
-import Banners from "../Banners/Banners";
-
 const Home = () => {
-  return (
-    <div>
-      <Banners />
-    </div>
-  );
+  return <div>Home </div>;
 };
 
 export default Home;

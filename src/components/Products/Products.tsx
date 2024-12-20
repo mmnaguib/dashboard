@@ -24,6 +24,11 @@ const Products = () => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
+        await ProductService.deleteProduct(id);
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+        setProducts((prevProducts) =>
+          prevProducts.filter((product) => product.id !== id)
+        );
       }
     });
   };

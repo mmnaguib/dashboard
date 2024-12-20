@@ -10,7 +10,7 @@ const AddProduct = () => {
   const [description, setDescription] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
   const [price, setPrice] = useState<number>(0);
-  const [category, setCategory] = useState<number>(0);
+  const [categoryId, setCategoryId] = useState<number>(0);
   const [qunatity, setQuantity] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [categories, setCategories] = useState<ICategoryProps[]>([]);
@@ -31,8 +31,9 @@ const AddProduct = () => {
         image,
         price,
         qunatity,
-        category
+        categoryId
       );
+      window.location.reload();
       toast.success("تمت اضافة القسم بنجاح");
     } catch (err) {
       console.log(err);
@@ -115,7 +116,7 @@ const AddProduct = () => {
               <div className="form-group">
                 <label>الكمية</label>
                 <select
-                  onChange={(e) => setCategory(+e.target.value)}
+                  onChange={(e) => setCategoryId(+e.target.value)}
                   className="inputField"
                 >
                   {categories.map((category) => (
@@ -124,6 +125,7 @@ const AddProduct = () => {
                     </option>
                   ))}
                 </select>
+                {categoryId}
               </div>
               <div>
                 <button className="addCategoryBtn" disabled={loading}>

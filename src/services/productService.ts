@@ -25,7 +25,7 @@ const ProductService = {
     formData.append("description", description);
     formData.append("price", price.toString());
     formData.append("Quantity", quantity.toString());
-    formData.append("category", category.toString());
+    formData.append("categoryId", category.toString());
     formData.append("userId", user ? JSON.parse(user).userId : "");
 
     if (image) {
@@ -44,6 +44,15 @@ const ProductService = {
       console.error("Error adding Product:", err.response?.data || err.message);
       return err.response?.data;
     }
+  },
+
+  deleteProduct: async (id: number) => {
+    await axiosInstance.delete(`Product/${id}`, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
   },
 };
 

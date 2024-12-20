@@ -16,6 +16,10 @@ export const Sidebar = () => {
           <i className="fa-solid fa-home"></i>
           <Link to="/products">المنتجات</Link>
         </li>
+        <li>
+          <i className="fa-solid fa-home"></i>
+          <Link to="/banners">الصور الرئيسية</Link>
+        </li>
       </ul>
     </div>
   );

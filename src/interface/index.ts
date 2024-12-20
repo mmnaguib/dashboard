@@ -25,7 +25,10 @@ export interface IProductProps {
   image: string;
 }
 export interface IRegisterProps {}
-export interface IBannerProps {}
+export interface IBannerProps {
+  id: number;
+  image: string;
+}
 
 export interface IEditPopupProps {
   categoryToEdit: ICategoryProps | null;
