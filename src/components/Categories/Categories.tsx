@@ -2,18 +2,32 @@ import React, { useEffect, useState } from "react";
 import CategoryService from "../../services/categoryService";
 import { ICategoryProps } from "../../interface";
 import Swal from "sweetalert2";
-
 import "./categories.css";
-import { setFips } from "crypto";
+import AddCategory from "./AddCategory";
+import { toast } from "react-toastify";
+
 const Categories = () => {
   const [categories, setCategories] = useState<ICategoryProps[]>([]);
-  const [openNew, setOpenNew] = useState<boolean>(false);
-  const [name, setCatName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [image, setimage] = useState<File | null>(null);
+  const [categoryToEdit, setCategoryToEdit] = useState<ICategoryProps | null>(
+    null
+  );
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const [openEdit, setOpenEdit] = useState(false);
+  const [editName, setEditName] = useState<string>("");
+  const [editID, setEditID] = useState<number>(0);
+  const [editDescription, setEditDescription] = useState<string>("");
+  const [editImage, setEditImage] = useState<File | null>(null);
   const getAll = async () => {
     const res = await CategoryService.getAllCategories();
     setCategories(res);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      setEditImage(files[0]);
+    }
   };
 
   const deleteHandler = async (id: number) => {
@@ -35,28 +49,38 @@ const Categories = () => {
       }
     });
   };
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      setimage(files[0]);
-    }
+  const openEditPopup = (category: ICategoryProps) => {
+    setCategoryToEdit(category);
+    setEditID(category.id);
+    setEditName(category.name);
+    setEditDescription(category.description);
+    setEditImage(null);
+    setOpenEdit(true);
   };
-  const addCategoryHandler = async (e: { preventDefault: () => void }) => {
+
+  const editCategoryHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    try {
-      const res = await CategoryService.addNewCategory(
-        name,
-        description,
-        image
-      );
-      setCategories((prevCategories) => [...prevCategories, res]);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setOpenNew(false);
-      setCatName("");
-      setDescription("");
-      setimage(null);
+    setLoading(true);
+    if (categoryToEdit?.id) {
+      try {
+        const res = await CategoryService.updateCategory(
+          editID,
+          editName,
+          editDescription,
+          editImage
+        );
+        console.log("res", res);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+        setOpenEdit(false);
+        setEditName("");
+        setEditDescription("");
+        setEditImage(null);
+      }
+    } else {
+      console.log("مفيش id");
     }
   };
 
@@ -66,20 +90,18 @@ const Categories = () => {
 
   return (
     <div>
-      <button onClick={() => setOpenNew(true)} className="addBtn">
-        <i className="fa-solid fa-plus"></i>
-      </button>
-
-      {openNew && (
+      <AddCategory />
+      {openEdit && (
         <div className="addCategoryPopup">
           <div className="popupContent">
-            <form onSubmit={addCategoryHandler}>
+            <form onSubmit={editCategoryHandler}>
               <div className="form-group">
+                {editID}
                 <label>اسم القسم</label>
                 <input
                   type="text"
-                  value={name}
-                  onChange={(e) => setCatName(e.target.value)}
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
                   className="inputField"
                   placeholder="اسم القسم"
                   required
@@ -89,8 +111,8 @@ const Categories = () => {
                 <label>وصف القسم</label>
                 <input
                   type="text"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  value={editDescription}
+                  onChange={(e) => setEditDescription(e.target.value)}
                   className="inputField"
                   placeholder="اسم القسم"
                 />
@@ -102,13 +124,14 @@ const Categories = () => {
                   onChange={handleFileChange}
                   className="inputField"
                 />
+                <img src={categoryToEdit?.image} width={30} height={30} />
               </div>
               <div>
-                <button className="addCategoryBtn">اضافة</button>
+                <button className="addCategoryBtn">{"تعديل"}</button>
               </div>
               <button
                 className="closePopupBtn"
-                onClick={() => setOpenNew(false)}
+                onClick={() => setOpenEdit(false)}
               >
                 X
               </button>
@@ -136,7 +159,10 @@ const Categories = () => {
                 <img src={category.image} alt="" width={50} height={50} />
               </td>
               <td>
-                <button className="edit actionsBtn">
+                <button
+                  onClick={() => openEditPopup(category)}
+                  className="edit actionsBtn"
+                >
                   <i className="fa-solid fa-edit"></i>
                 </button>
                 <button

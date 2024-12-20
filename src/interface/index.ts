@@ -11,7 +11,7 @@ export interface ICategoryProps {
   id: number;
   image: string;
   userId: string;
-  products: IProductProps[];
+  products?: IProductProps[];
   name: string;
   description: string;
 }
