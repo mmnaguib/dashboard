@@ -26,3 +26,17 @@ export interface IProductProps {
 }
 export interface IRegisterProps {}
 export interface IBannerProps {}
+
+export interface IEditPopupProps {
+  categoryToEdit: ICategoryProps | null;
+  openEdit: boolean;
+  setOpenEdit: (val: boolean) => void;
+  editID: number;
+  editName: string;
+  editDescription: string;
+  editImage: File | null;
+  setEditID: (val: number) => void;
+  setEditName: (val: string) => void;
+  setEditDescription: (val: string) => void;
+  setEditImage: (val: File | null) => void;
+}

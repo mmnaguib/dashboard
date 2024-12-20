@@ -47,6 +47,7 @@ const CategoryService = {
       return err.response?.data;
     }
   },
+
   updateCategory: async (
     id: number,
     name: string,

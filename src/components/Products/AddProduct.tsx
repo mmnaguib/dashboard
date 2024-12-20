@@ -1,14 +1,19 @@
-import React, { useState } from "react";
-import CategoryService from "../../services/categoryService";
+import React, { useEffect, useState } from "react";
+import ProductService from "../../services/productService";
 import { toast } from "react-toastify";
+import { ICategoryProps } from "../../interface";
+import CategoryService from "../../services/categoryService";
 
-const AddCategory = () => {
-  const [name, setCatName] = useState<string>("");
+const AddProduct = () => {
+  const [title, setTitle] = useState<string>("");
   const [openNew, setOpenNew] = useState<boolean>(false);
   const [description, setDescription] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
+  const [price, setPrice] = useState<number>(0);
+  const [category, setCategory] = useState<number>(0);
+  const [qunatity, setQuantity] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
-
+  const [categories, setCategories] = useState<ICategoryProps[]>([]);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
@@ -16,23 +21,39 @@ const AddCategory = () => {
     }
   };
 
-  const addCategoryHandler = async (e: { preventDefault: () => void }) => {
+  const addProductHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await CategoryService.addNewCategory(name, description, image);
-      window.location.reload();
+      await ProductService.addNewProduct(
+        title,
+        description,
+        image,
+        price,
+        qunatity,
+        category
+      );
       toast.success("تمت اضافة القسم بنجاح");
     } catch (err) {
       console.log(err);
     } finally {
       setLoading(false);
       setOpenNew(false);
-      setCatName("");
+      setTitle("");
       setDescription("");
+      setPrice(0);
+      setQuantity(0);
       setImage(null);
     }
   };
+
+  const getAllCatgories = async () => {
+    const res = await CategoryService.getAllCategories();
+    setCategories(res);
+  };
+  useEffect(() => {
+    getAllCatgories();
+  }, []);
   return (
     <>
       <button onClick={() => setOpenNew(true)} className="addBtn">
@@ -41,13 +62,13 @@ const AddCategory = () => {
       {openNew && (
         <div className="addCategoryPopup">
           <div className="popupContent">
-            <form onSubmit={addCategoryHandler}>
+            <form onSubmit={addProductHandler}>
               <div className="form-group">
                 <label>اسم القسم</label>
                 <input
                   type="text"
-                  value={name}
-                  onChange={(e) => setCatName(e.target.value)}
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
                   className="inputField"
                   placeholder="اسم القسم"
                   required
@@ -71,6 +92,39 @@ const AddCategory = () => {
                   className="inputField"
                 />
               </div>
+              <div className="form-group">
+                <label>السعر</label>
+                <input
+                  type="number"
+                  value={price}
+                  onChange={(e) => setPrice(+e.target.value)}
+                  className="inputField"
+                  placeholder="سعر المنتج"
+                />
+              </div>
+              <div className="form-group">
+                <label>الكمية</label>
+                <input
+                  type="number"
+                  value={qunatity}
+                  onChange={(e) => setQuantity(+e.target.value)}
+                  className="inputField"
+                  placeholder="الكمية"
+                />
+              </div>
+              <div className="form-group">
+                <label>الكمية</label>
+                <select
+                  onChange={(e) => setCategory(+e.target.value)}
+                  className="inputField"
+                >
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div>
                 <button className="addCategoryBtn" disabled={loading}>
                   {loading ? "loading" : "إضافة"}
@@ -90,4 +144,4 @@ const AddCategory = () => {
   );
 };
 
-export default AddCategory;
+export default AddProduct;

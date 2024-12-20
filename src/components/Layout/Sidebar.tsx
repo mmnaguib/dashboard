@@ -12,6 +12,10 @@ export const Sidebar = () => {
           <i className="fa-solid fa-home"></i>
           <Link to="/categories">الأقسام</Link>
         </li>
+        <li>
+          <i className="fa-solid fa-home"></i>
+          <Link to="/products">المنتجات</Link>
+        </li>
       </ul>
     </div>
   );

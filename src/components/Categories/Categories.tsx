@@ -4,30 +4,24 @@ import { ICategoryProps } from "../../interface";
 import Swal from "sweetalert2";
 import "./categories.css";
 import AddCategory from "./AddCategory";
-import { toast } from "react-toastify";
+import EditCategory from "./EditCategory";
 
 const Categories = () => {
   const [categories, setCategories] = useState<ICategoryProps[]>([]);
   const [categoryToEdit, setCategoryToEdit] = useState<ICategoryProps | null>(
     null
   );
-  const [loading, setLoading] = useState<boolean>(false);
 
   const [openEdit, setOpenEdit] = useState(false);
+
   const [editName, setEditName] = useState<string>("");
   const [editID, setEditID] = useState<number>(0);
   const [editDescription, setEditDescription] = useState<string>("");
   const [editImage, setEditImage] = useState<File | null>(null);
+
   const getAll = async () => {
     const res = await CategoryService.getAllCategories();
     setCategories(res);
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      setEditImage(files[0]);
-    }
   };
 
   const deleteHandler = async (id: number) => {
@@ -58,32 +52,6 @@ const Categories = () => {
     setOpenEdit(true);
   };
 
-  const editCategoryHandler = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    setLoading(true);
-    if (categoryToEdit?.id) {
-      try {
-        const res = await CategoryService.updateCategory(
-          editID,
-          editName,
-          editDescription,
-          editImage
-        );
-        console.log("res", res);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setLoading(false);
-        setOpenEdit(false);
-        setEditName("");
-        setEditDescription("");
-        setEditImage(null);
-      }
-    } else {
-      console.log("مفيش id");
-    }
-  };
-
   useEffect(() => {
     getAll();
   }, []);
@@ -91,54 +59,19 @@ const Categories = () => {
   return (
     <div>
       <AddCategory />
-      {openEdit && (
-        <div className="addCategoryPopup">
-          <div className="popupContent">
-            <form onSubmit={editCategoryHandler}>
-              <div className="form-group">
-                {editID}
-                <label>اسم القسم</label>
-                <input
-                  type="text"
-                  value={editName}
-                  onChange={(e) => setEditName(e.target.value)}
-                  className="inputField"
-                  placeholder="اسم القسم"
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>وصف القسم</label>
-                <input
-                  type="text"
-                  value={editDescription}
-                  onChange={(e) => setEditDescription(e.target.value)}
-                  className="inputField"
-                  placeholder="اسم القسم"
-                />
-              </div>
-              <div className="form-group">
-                <label>صورة القسم</label>
-                <input
-                  type="file"
-                  onChange={handleFileChange}
-                  className="inputField"
-                />
-                <img src={categoryToEdit?.image} width={30} height={30} />
-              </div>
-              <div>
-                <button className="addCategoryBtn">{"تعديل"}</button>
-              </div>
-              <button
-                className="closePopupBtn"
-                onClick={() => setOpenEdit(false)}
-              >
-                X
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
+      <EditCategory
+        categoryToEdit={categoryToEdit}
+        openEdit={openEdit}
+        setOpenEdit={setOpenEdit}
+        editID={editID}
+        setEditID={setEditID}
+        editName={editName}
+        setEditName={setEditName}
+        editDescription={editDescription}
+        setEditDescription={setEditDescription}
+        editImage={editImage}
+        setEditImage={setEditImage}
+      />
       <table border={1} className="tableShow">
         <thead>
           <tr>
