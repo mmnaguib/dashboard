@@ -5,9 +5,9 @@ import Home from "./components/Home/Home";
 import Categories from "./components/Categories/Categories";
 import Products from "./components/Products/Products";
 import Banners from "./components/Banners/Banners";
-import Register from "./components/Register/Register";
 import { ToastContainer } from "react-toastify";
 import Layout from "./components/Layout/Layout";
+import RegisterNewAdmin from "./components/Register/RegisterNewAdmin";
 
 function App() {
   const isLoggedIn = localStorage.getItem("authToken");
@@ -37,7 +37,7 @@ function App() {
           <Route
             index
             path="/admin-register"
-            element={isLoggedIn ? <Register /> : <Navigate to="/" />}
+            element={isLoggedIn ? <RegisterNewAdmin /> : <Navigate to="/" />}
           />
         </Routes>
       </div>

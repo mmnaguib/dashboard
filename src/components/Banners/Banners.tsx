@@ -55,10 +55,12 @@ const Banners = () => {
     try {
       await BannerService.addNewImage(image);
       toast.success("تم اضافة الصورة بنجاح");
+      window.location.reload();
     } catch (err) {
       console.log("err add banner" + err);
     } finally {
       setLoading(false);
+      setAddImage(false);
     }
   };
 

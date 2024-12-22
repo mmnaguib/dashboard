@@ -20,6 +20,10 @@ export const Sidebar = () => {
           <i className="fa-solid fa-home"></i>
           <Link to="/banners">الصور الرئيسية</Link>
         </li>
+        <li>
+          <i className="fa-solid fa-home"></i>
+          <Link to="/admin-register">اضافة أدمن جديد</Link>
+        </li>
       </ul>
     </div>
   );
