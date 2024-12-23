@@ -7,12 +7,16 @@
 
 .homeCards > div {
     width: 22%;
-    background-color: #ff0;
     border-radius: 8px;
     padding: 10px;
     position: relative;
 }
+.homeCard.categories{background-color: #f00;color: #fff}
+.homeCard.users{background-color: #7e7e00;color: #fff}
+.homeCard.photos{background-color: #080;color: #fff}
+.homeCard.products{background-color: #00f;color: #fff}
 
+.homeCard a{color: #fff;}
 
 .homeCards i {
     position: absolute;

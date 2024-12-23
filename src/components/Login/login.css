@@ -42,8 +42,8 @@
 }
 
 .inputField{
-    border: navajowhite;
-    border-bottom: 1px solid #000;
+    border: none;
+    border-bottom: 1px solid #b97802;
     padding: 10px 10px;
     outline: none;
     background: #f5f5f5;

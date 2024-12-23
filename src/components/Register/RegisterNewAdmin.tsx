@@ -126,9 +126,16 @@ const RegisterNewAdmin = () => {
             />
           </div>
         </div>
-        <button type="submit" className="btn submitBtn" disabled={loading}>
-          {loading ? "loading" : "تسجيل الدخول"}
-        </button>
+        <div style={{ width: "300px", margin: "auto", height: "30px" }}>
+          <button
+            type="submit"
+            className="btn submitBtn"
+            disabled={loading}
+            style={{ height: "50px !important" }}
+          >
+            {loading ? "loading" : "تسجيل الدخول"}
+          </button>
+        </div>
       </form>
     </div>
   );

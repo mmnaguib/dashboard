@@ -10,12 +10,15 @@
 .tableShow{
     text-align: center;
     width: 100%;
-    border-collapse: separate;
+    border-collapse: collapse;
+    border-color: #b97802;
 }
+
+.tableShow thead{background-color: #b97802;color: #fff}
 
 .tableShow td,
 .tableShow th{
-    padding: 10px;
+    padding: 5px;
 }
 
 .actionsBtn{
@@ -30,10 +33,10 @@
 }
 
 .actionsBtn.edit{
-    background-color: #0f0;
+    background-color: #adadad;
 }
 .actionsBtn.delete{
-    background-color: #f00;
+    background-color: #b97802;
 }
 
 .addBtn {
@@ -94,11 +97,13 @@
     position: absolute;
     top: 10px;
     left: 10px;
-    background-color: red;
+    background-color: #b97802;
     color: white;
     border: none;
-    padding: 10px;
+    height: 30px;
+    width: 30px;
     cursor: pointer;
+    border-radius: 4px;
   }
   
   .closePopupBtn:hover {
